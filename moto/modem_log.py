@@ -41,7 +41,8 @@ class ModemLog:
         Parse a raw log string into a generator of ModemLog objects.
         """
         for line in response.split("}-{"):
-            yield cls.from_line(line)
+            if "\n" in line:
+                yield cls.from_line(line)
 
     @classmethod
     def from_line(cls, line: str) -> Self:
