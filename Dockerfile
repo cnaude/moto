@@ -1,9 +1,25 @@
 FROM python:3.11
 
-COPY requirements.txt requirements.txt
+SHELL ["/bin/bash", "-eo", "pipefail", "-c"]
 
-RUN pip install -r requirements.txt
+COPY moto.sh /
 
-COPY moto moto
+RUN apt-get -y update \
+    && apt-get -y upgrade \
+    && apt-get -y install git \
+    && useradd -u 1000 -m -d /home/python -s /bin/bash python \
+    && chmod 555 /moto.sh
 
-ENTRYPOINT ["python", "-m", "moto"]
+USER python
+
+WORKDIR /home/python
+
+RUN git clone https://github.com/cnaude/moto.git moto-git \
+    && mv moto-git/* . \
+    && python -m venv venv \
+    && source venv/bin/activate \
+    && python -m pip install --upgrade pip \
+    && pip install -r requirements.txt
+
+CMD [ "/moto.sh" ]
+
