@@ -38,19 +38,16 @@ class InfluxClient:  # pylint: disable=too-few-public-methods
         token: str | None = None,
         org: str | None = None,
         bucket: str | None = None,
-        ssl_verify: bool | None = True,
     ):
         self._url = url or os.environ.get("INFLUXDB_URL", "http://localhost:8086")
         self._token = token or os.environ["INFLUXDB_TOKEN"]
         self._org = org or os.environ["INFLUXDB_ORG"]
         self._bucket = bucket or os.environ["INFLUXDB_BUCKET"]
-        self._ssl_verify = bucket or os.environ["INFLUXDB_SSL_VERIFY"]
 
         self._client = InfluxDBClient(
             url=self._url,
             token=self._token,
             org=self._org,
-            verify_ssl=ssl_verify,
         )
 
         self._write_api = self._client.write_api(write_options=SYNCHRONOUS)
