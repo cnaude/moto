@@ -32,6 +32,7 @@ If you're using InfluxDB (v2), you need to set these variables as well:
 - `INFLUXDB_TOKEN` should be scoped with read/write access to the desired bucket
 - `INFLUXDB_ORG`
 - `INFLUXDB_BUCKET`
+- `INFLUXDB_VERIFY_SSL`
 
 # Notes
 

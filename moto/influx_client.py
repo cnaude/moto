@@ -2,6 +2,7 @@
 Wrappers around InfluxDBClient for this library's purposes.
 """
 import os
+
 from typing import Protocol
 
 from influxdb_client import InfluxDBClient, Point
@@ -28,7 +29,7 @@ class InfluxClient:  # pylint: disable=too-few-public-methods
     _token: str
     _org: str
     _bucket: str
-    _ssl_verify: bool
+    _verify_ssl: bool
 
     _client: InfluxDBClient
     _write_api: WriteApi
@@ -39,19 +40,19 @@ class InfluxClient:  # pylint: disable=too-few-public-methods
         token: str | None = None,
         org: str | None = None,
         bucket: str | None = None,
-        ssl_verify: bool | None = False,
+        verify_ssl: bool | None = False,
     ):
         self._url = url or os.environ.get("INFLUXDB_URL", "http://localhost:8086")
         self._token = token or os.environ["INFLUXDB_TOKEN"]
         self._org = org or os.environ["INFLUXDB_ORG"]
         self._bucket = bucket or os.environ["INFLUXDB_BUCKET"]
-        self._ssl_verify = bucket or os.environ["INFLUXDB_SSL_VERIFY"]
+        self._verify_ssl = bucket or os.environ.get("INFLUXDB_VERIFY_SSL", False)
 
         self._client = InfluxDBClient(
             url=self._url,
             token=self._token,
             org=self._org,
-            ssl_verify=self._ssl_verify,
+            verify_ssl=self._verify_ssl,
         )
 
         self._write_api = self._client.write_api(write_options=SYNCHRONOUS)
