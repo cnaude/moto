@@ -28,6 +28,7 @@ class InfluxClient:  # pylint: disable=too-few-public-methods
     _token: str
     _org: str
     _bucket: str
+    _ssl_verify: bool
 
     _client: InfluxDBClient
     _write_api: WriteApi
